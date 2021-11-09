@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Vacations.Models.VacationsModel>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfPeople)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransportType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HotelStars)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRoomFree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceOfBedForAdult)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceOfBedForChildren)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPeople)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransportType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HotelStars)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRoomFree)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceOfBedForAdult)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceOfBedForChildren)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
