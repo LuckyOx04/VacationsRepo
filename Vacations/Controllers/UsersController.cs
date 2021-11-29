@@ -10,6 +10,7 @@ namespace Vacations.Controllers
 {
     public class UsersController : Controller
     {
+        public static bool IsLoggedIn { get; set; } = false;
         public IActionResult Index()
         {
             return View();
@@ -22,6 +23,7 @@ namespace Vacations.Controllers
             if (service.IsValid(user))
             {
                 return View("SuccessfulLogin", user);
+                IsLoggedIn = true;
             }
             else
             {

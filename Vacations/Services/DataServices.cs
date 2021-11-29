@@ -9,9 +9,9 @@ namespace Vacations.Services
     public class DataServices
     {
         DatabaseAccess db = new DatabaseAccess();
-        public void Reserve()
+        public List<VacationsModel> GetVacationData()
         {
-            return;
+            return db.GetVacations();
         }
         public bool IsValid(UserModel user)
         {
