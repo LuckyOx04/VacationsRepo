@@ -45,6 +45,47 @@ namespace Vacations.Services
             return sucess;
         }
 
+        public List<EmployeeModel> GetEmployees()
+        {
+            List<EmployeeModel> employees = new List<EmployeeModel>();
+
+            string sqlStatement = "SELECT [Name], [Second Name]," +
+                " [Last Name], [EGN], [GSM], [Email], [Date Of Employment]," +
+                " [Is Active], [Date Of Release] FROM dbo.Employees";
+
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        employees.Add(new EmployeeModel
+                        {
+                            FirstName = reader["Name"].ToString(),
+                            SecondName = reader["Second Name"].ToString(),
+                            LastName = reader["Last Name"].ToString(),
+                            EGN = reader["EGN"].ToString(),
+                            GSM = reader["GSM"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            DateOfEmployment = reader["Date Of Employment"].ToString(),
+                            IsActive = (bool)reader["Is Active"],
+                            DateOfRelease = reader["Date Of Release"].ToString()
+                        });
+                    }
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            return employees;
+        }
+
         public List<VacationsModel> GetVacations()
         {
             List<VacationsModel> vacations = new List<VacationsModel>();
@@ -84,6 +125,51 @@ namespace Vacations.Services
             }
 
             return vacations;
+        }
+
+        public void AddClient(ClientModel client)
+        {
+            bool success = false;
+
+            string sqlStatement = "BEGIN" +
+                " IF NOT EXISTS (SELECT * FROM dbo.Clients" +
+                " WHERE [First Name] = @_FirstName" +
+                " AND [Last Name] = @_LastName" +
+                " AND [GSM] = @_GSM" +
+                " AND [Email] = @_Email)" +
+                " AND [Is Mature] = @_IsMature;" +
+                " BEGIN" +
+                " INSERT INTO dbo.Clients ([First Name], [Last Name], [GSM], [Email], [Is Mature])" +
+                " VALUES (@_FirstName, @_LastName, @_GSM, @_Email, @_IsMature)" +
+                " END" +
+                " END";
+
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+
+                command.Parameters.Add("@_FirstName", System.Data.SqlDbType.VarChar, 50).Value = client.FirstName;
+                command.Parameters.Add("@_LastName", System.Data.SqlDbType.VarChar, 50).Value = client.LastName;
+                command.Parameters.Add("@_GSM", System.Data.SqlDbType.VarChar, 10).Value = client.GSM;
+                command.Parameters.Add("@_Email", System.Data.SqlDbType.VarChar, 50).Value = client.Email;
+                command.Parameters.Add("@_IsMature", System.Data.SqlDbType.Bit).Value = client.IsMature;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        Console.WriteLine("Client successfully added!");
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
     }
 }

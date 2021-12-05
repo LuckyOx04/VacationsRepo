@@ -13,9 +13,20 @@ namespace Vacations.Services
         {
             return db.GetVacations();
         }
+
+        public List<EmployeeModel> GetEmployees()
+        {
+            return db.GetEmployees();
+        }
+
         public bool IsValid(UserModel user)
         {
             return db.ValidateUser(user);
+        }
+
+        public void AddClient(ClientModel client)
+        {
+            db.AddClient(client);
         }
     }
 }
