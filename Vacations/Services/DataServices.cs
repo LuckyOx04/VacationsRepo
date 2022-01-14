@@ -24,9 +24,9 @@ namespace Vacations.Services
             return db.ValidateUser(user);
         }
 
-        public void AddClient(ClientModel client)
+        public bool AddClient(ClientModel client)
         {
-            db.AddClient(client);
+            return db.AddClient(client);
         }
     }
 }

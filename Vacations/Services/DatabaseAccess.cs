@@ -127,49 +127,43 @@ namespace Vacations.Services
             return vacations;
         }
 
-        public void AddClient(ClientModel client)
+        public bool AddClient(ClientModel client)
         {
             bool success = false;
 
-            string sqlStatement = "BEGIN" +
-                " IF NOT EXISTS (SELECT * FROM dbo.Clients" +
-                " WHERE [First Name] = @_FirstName" +
-                " AND [Last Name] = @_LastName" +
-                " AND [GSM] = @_GSM" +
-                " AND [Email] = @_Email)" +
-                " AND [Is Mature] = @_IsMature;" +
-                " BEGIN" +
-                " INSERT INTO dbo.Clients ([First Name], [Last Name], [GSM], [Email], [Is Mature])" +
-                " VALUES (@_FirstName, @_LastName, @_GSM, @_Email, @_IsMature)" +
-                " END" +
-                " END";
+            string sqlStatement = " INSERT INTO dbo.Clients ([First Name], [Last Name], [GSM], [Email], [Is Mature])" +
+                " VALUES (@_FirstName, @_LastName, @_GSM, @_Email, @_IsMature)";
+            string sqlStatement2 = "SELECT COUNT(*) FROM dbo.Clients WHERE [Email] = @checkEmail";
 
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(sqlStatement, connection);
-
-                command.Parameters.Add("@_FirstName", System.Data.SqlDbType.VarChar, 50).Value = client.FirstName;
-                command.Parameters.Add("@_LastName", System.Data.SqlDbType.VarChar, 50).Value = client.LastName;
-                command.Parameters.Add("@_GSM", System.Data.SqlDbType.VarChar, 10).Value = client.GSM;
-                command.Parameters.Add("@_Email", System.Data.SqlDbType.VarChar, 50).Value = client.Email;
-                command.Parameters.Add("@_IsMature", System.Data.SqlDbType.Bit).Value = client.IsMature;
-
-                try
+                SqlCommand checkCommand = new SqlCommand(sqlStatement2, connection);
+                checkCommand.Parameters.AddWithValue("@checkEmail", client.Email);
+                connection.Open();
+                int userExists = (int)checkCommand.ExecuteScalar();
+                if (userExists == 0)
                 {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
+                    success = true;
 
-                    if (reader.HasRows)
+                    SqlCommand command = new SqlCommand(sqlStatement, connection);
+
+                    command.Parameters.Add("@_FirstName", System.Data.SqlDbType.VarChar, 50).Value = client.FirstName;
+                    command.Parameters.Add("@_LastName", System.Data.SqlDbType.VarChar, 50).Value = client.LastName;
+                    command.Parameters.Add("@_GSM", System.Data.SqlDbType.VarChar, 10).Value = client.GSM;
+                    command.Parameters.Add("@_Email", System.Data.SqlDbType.VarChar, 50).Value = client.Email;
+                    command.Parameters.Add("@_IsMature", System.Data.SqlDbType.Bit).Value = client.IsMature;
+
+                    try
                     {
-                        Console.WriteLine("Client successfully added!");
+                        command.ExecuteNonQuery();
                     }
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
             }
+            return success;
         }
     }
 }

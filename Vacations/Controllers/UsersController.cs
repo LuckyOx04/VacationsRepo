@@ -23,7 +23,6 @@ namespace Vacations.Controllers
             if (service.IsValid(user))
             {
                 return View("SuccessfulLogin", user);
-                IsLoggedIn = true;
             }
             else
             {

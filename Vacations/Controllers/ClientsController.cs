@@ -18,9 +18,14 @@ namespace Vacations.Controllers
 
         public IActionResult ClientAdded(ClientModel client)
         {
-            services.AddClient(client);
-
-            return View("Index");
+            if (services.AddClient(client))
+            {
+                return View("Index");
+            }
+            else
+            {
+                return View("Index");
+            }
         }
     }
 }
