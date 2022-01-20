@@ -10,10 +10,10 @@ namespace Vacations.Controllers
 {
     public class ViewVacationsController : Controller
     {
-        DataServices services = new DataServices();
+        DatabaseAccess services = new DatabaseAccess();
         public IActionResult List(VacationsModel vacations)
         {
-            return View("List", services.GetVacationData());
+            return View("List", services.GetVacations());
         }
     }
 }

@@ -16,9 +16,11 @@ namespace Vacations.Models
         [DisplayName("Last Name")]
         public string LastName { get; set; }
         [Required]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Phone must be numbers only!")]
         [DisplayName("Telephone Number")] 
         public string GSM { get; set; }
         [Required]
+        [EmailAddress(ErrorMessage = "invalid email")]
         public string Email { get; set; }
         [Required]
         [DisplayName("Are you mature?")]

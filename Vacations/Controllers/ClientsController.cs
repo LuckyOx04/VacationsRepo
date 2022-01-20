@@ -10,7 +10,7 @@ namespace Vacations.Controllers
 {
     public class ClientsController : Controller
     {
-        DataServices services = new DataServices();
+        DatabaseAccess services = new DatabaseAccess();
         public IActionResult Index()
         {
             return View();

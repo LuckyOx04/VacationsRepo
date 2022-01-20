@@ -9,7 +9,7 @@ namespace Vacations.Controllers
 {
     public class EmployeesController : Controller
     {
-        DataServices services = new DataServices();
+        DatabaseAccess services = new DatabaseAccess();
         public IActionResult Index()
         {
             return View("ViewEmployees", services.GetEmployees());

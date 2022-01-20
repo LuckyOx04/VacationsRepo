@@ -18,9 +18,9 @@ namespace Vacations.Controllers
 
         public IActionResult Validate(UserModel user)
         {
-            DataServices service = new DataServices();
+            DatabaseAccess service = new DatabaseAccess();
 
-            if (service.IsValid(user))
+            if (service.ValidateUser(user))
             {
                 return View("SuccessfulLogin", user);
             }
