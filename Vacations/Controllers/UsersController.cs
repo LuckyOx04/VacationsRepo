@@ -11,6 +11,7 @@ namespace Vacations.Controllers
     public class UsersController : Controller
     {
         public static bool IsLoggedIn { get; set; } = false;
+
         public IActionResult Index()
         {
             return View();

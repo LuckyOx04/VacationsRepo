@@ -10,6 +10,7 @@ namespace Vacations.Controllers
     public class EmployeesController : Controller
     {
         DatabaseAccess services = new DatabaseAccess();
+
         public IActionResult Index()
         {
             return View("ViewEmployees", services.GetEmployees());

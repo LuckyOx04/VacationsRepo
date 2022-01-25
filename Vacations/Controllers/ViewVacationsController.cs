@@ -11,6 +11,7 @@ namespace Vacations.Controllers
     public class ViewVacationsController : Controller
     {
         DatabaseAccess services = new DatabaseAccess();
+
         public IActionResult List(VacationsModel vacations)
         {
             return View("List", services.GetVacations());
